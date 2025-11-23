@@ -5,27 +5,27 @@ import java.util.NoSuchElementException;
 public class Cola {
 
     private Nodo frente;
-    private Nodo cola;
+    private Nodo fin;
     private int tamaño;
 
     public Cola() {
         this.frente = null;
-        this.cola = null;
+        this.fin = null;
         tamaño = 0;
     }
 
     public void enconlar (int dato) {
         Nodo nuevoNodo = new Nodo(dato);
 
-        if (cola == null) {
+        if (fin == null) {
             frente = nuevoNodo;
-            cola = nuevoNodo;
+            fin = nuevoNodo;
             tamaño++;
             return;
         }
 
-        cola.setSiguiente(nuevoNodo);
-        cola = nuevoNodo;
+        fin.setSiguiente(nuevoNodo);
+        fin = nuevoNodo;
         tamaño++;
     }
 
@@ -50,7 +50,7 @@ public class Cola {
     }
 
     public boolean isEmpty() {
-        if (cola == null) {
+        if (fin == null) {
             return true;
         }
         return false;
@@ -62,6 +62,7 @@ public class Cola {
 
     public void vaciar() {
         frente = null;
+        fin = null;
     }
 
     public void ver() {
