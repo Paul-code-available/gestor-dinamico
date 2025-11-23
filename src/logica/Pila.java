@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.NoSuchElementException;
+
 public class Pila {
 
     private Nodo tope;
@@ -36,7 +38,7 @@ public class Pila {
 
     public int peek() {
         if (isEmpty()) {
-            throw new IllegalStateException("No hay elementos para ver.");
+            throw new NoSuchElementException("No hay elementos para ver.");
         }
         return tope.getDato();
     }
@@ -50,13 +52,12 @@ public class Pila {
 
     public void vaciar() {
         if (isEmpty()) {
-            throw new IllegalArgumentException("La pila ya esta vacia.");
+            throw new IllegalStateException("La pila ya esta vacia.");
         }
-
         tope = null;
     }
 
-    public void verPila() {
+    public void ver() {
         if (isEmpty()) {
             throw new IllegalStateException("La pila esta vacia.");
         }
