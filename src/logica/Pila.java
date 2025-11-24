@@ -15,13 +15,12 @@ public class Pila {
     public void push(int dato) {
         Nodo nuevoNodo = new Nodo(dato);
 
-        if (tope==null) {
+        if (isEmpty()) {
             tope = nuevoNodo;
         } else {
             nuevoNodo.setSiguiente(tope);
             tope = nuevoNodo;
         }
-
         tamaño++;
     }
 
