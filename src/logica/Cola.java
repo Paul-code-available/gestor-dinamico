@@ -14,7 +14,7 @@ public class Cola {
         tamaño = 0;
     }
 
-    public void enconlar (int dato) {
+    public void encolar(int dato) {
         Nodo nuevoNodo = new Nodo(dato);
 
         if (fin == null) {
@@ -29,28 +29,31 @@ public class Cola {
         tamaño++;
     }
 
-    public int desenconlar (int dato) {
+    public int desencolar() {
         if (isEmpty()) {
-            throw new IllegalArgumentException("No hay elementos para desencolar.");
+            throw new IllegalStateException("No hay elementos para desencolar.");
         }
 
         int temporal = frente.getDato();
-        if (frente != null) {
-            frente = frente.getSiguiente();
-        }
+        frente = frente.getSiguiente();
         tamaño--;
+
+        if (frente == null) {
+            fin = null;
+        }
+
         return temporal;
     }
 
     public int peek () {
         if (isEmpty()) {
-            throw new NoSuchElementException("La cola esta vacia");
+            throw new NoSuchElementException("No hay elementos para ver.");
         }
         return frente.getDato();
     }
 
     public boolean isEmpty() {
-        if (fin == null) {
+        if (tamaño == 0) {
             return true;
         }
         return false;
@@ -61,8 +64,12 @@ public class Cola {
     }
 
     public void vaciar() {
+        if (isEmpty()) {
+            throw new IllegalStateException("No hay elementos para vaciar.");
+        }
         frente = null;
         fin = null;
+        tamaño = 0;
     }
 
     public void ver() {

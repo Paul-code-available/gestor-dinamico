@@ -9,26 +9,35 @@ public class ListaDoblementeEnlazada {
     public ListaDoblementeEnlazada() {
         cabeza = null;
         cola = null;
+        tamaño = 0;
     }
 
     public void insertarPosicion(int posicion, int dato) {
+
+        if (posicion < 0 || posicion > tamaño) {
+            throw new IndexOutOfBoundsException("Posición inválida.");
+        }
+
         Nodo nuevoNodo = new Nodo(dato);
-        // si la lista esta vacia
+
+        // lista vacía
         if (cabeza == null) {
             cabeza = nuevoNodo;
             cola = nuevoNodo;
             tamaño++;
             return;
         }
-        // si la posicion es la cabeza
+
+        // insertar al inicio
         if (posicion == 0) {
-            cabeza.setAnterior(nuevoNodo);
             nuevoNodo.setSiguiente(cabeza);
+            cabeza.setAnterior(nuevoNodo);
             cabeza = nuevoNodo;
             tamaño++;
             return;
         }
-        // si la posicion es la cola
+
+        // insertar al final
         if (posicion == tamaño) {
             cola.setSiguiente(nuevoNodo);
             nuevoNodo.setAnterior(cola);
@@ -36,70 +45,118 @@ public class ListaDoblementeEnlazada {
             tamaño++;
             return;
         }
-        // si esta entre la cabeza y la cola
-        Nodo nodo = cabeza;
-        int numeroNodo = 0;
-        while (numeroNodo < posicion) {
-            nodo = nodo.getSiguiente();
-        }
-        // conectando con el nodo anterior
-        nodo.setSiguiente(nuevoNodo);
-        nuevoNodo.setAnterior(nodo);
-        // conectando con el nodo siguiente
-        nuevoNodo.setSiguiente(nodo.getSiguiente());
-        nodo.getSiguiente().setAnterior(nuevoNodo);
-        tamaño++;
 
+        // insertar en medio
+        Nodo nodo = cabeza;
+        int index = 0;
+
+        while (index < posicion) {
+            nodo = nodo.getSiguiente();
+            index++;
+        }
+
+        // nodo es el nodo en la posición actual, insertamos antes de él
+
+        Nodo anterior = nodo.getAnterior();
+
+        anterior.setSiguiente(nuevoNodo);
+        nuevoNodo.setAnterior(anterior);
+
+        nuevoNodo.setSiguiente(nodo);
+        nodo.setAnterior(nuevoNodo);
+
+        tamaño++;
     }
+
 
     public int eliminar(int dato) {
         if (isEmpty()) {
             throw new IllegalStateException("No hay elementos para eliminar.");
         }
-        // si la cabeza es el dato que se quiere eliminar
+
+        // eliminar cabeza
         if (cabeza.getDato() == dato) {
+            int valor = cabeza.getDato();
+
             cabeza = cabeza.getSiguiente();
+
             if (cabeza == null) {
-                cola = null;
+                cola = null; // lista quedó vacía
             } else {
                 cabeza.setAnterior(null);
             }
+
             tamaño--;
-            return dato;
+            return valor;
         }
-        // si es la cola el dato a eliminar
+
+        // Caso 2: eliminar cola
         if (cola.getDato() == dato) {
+            int valor = cola.getDato();
+
             cola = cola.getAnterior();
+
             if (cola == null) {
                 cabeza = null;
             } else {
-                cola.setAnterior(null);
+                cola.setSiguiente(null);
             }
+
             tamaño--;
-            return dato;
+            return valor;
         }
-        // si esta entre la cabeza y la cola
+
+        // eliminar en medio
         Nodo nodo = cabeza;
-        while (nodo.getSiguiente() != null && nodo.getSiguiente().getDato() != dato) {
+
+        while (nodo != null && nodo.getDato() != dato) {
             nodo = nodo.getSiguiente();
         }
 
-        Nodo nodoEliminar = nodo.getSiguiente();
-        nodo.setSiguiente(nodoEliminar.getSiguiente());
-        // si no hay siguiente del nodo a eliminar actualizamos la cola es el nodo
-        if (nodoEliminar.getSiguiente() == null) {
-            cola = nodo;
-        } else {
-            nodoEliminar.getSiguiente().setAnterior(nodo);
+        if (nodo == null) {
+            throw new IllegalStateException("El elemento no existe en la lista.");
         }
+
+        // Reconectar
+        Nodo anterior = nodo.getAnterior();
+        Nodo siguiente = nodo.getSiguiente();
+
+        anterior.setSiguiente(siguiente);
+
+        if (siguiente != null) {
+            siguiente.setAnterior(anterior);
+        } else {
+            cola = anterior;
+        }
+
         tamaño--;
         return dato;
     }
 
+    public void buscar(int dato) {
+        if (isEmpty()) {
+            throw new IllegalStateException("No hay elementos para buscar.");
+        }
+
+        Nodo nodo = cabeza;
+        while (nodo != null && nodo.getDato() != dato) {
+            nodo = nodo.getSiguiente();
+        }
+
+        if (nodo == null) {
+            throw new IllegalStateException("El elemento no está en la lista.");
+        }
+
+        System.out.println("Elemento encontrado: " + dato);
+    }
+
+
     public void vaciar() {
         cabeza = null;
         cola = null;
+        tamaño = 0;   // ← antes no lo ponías
     }
+
 
     public void mostrarAdelante() {
         Nodo nodo = cabeza;
@@ -109,10 +166,12 @@ public class ListaDoblementeEnlazada {
         }
     }
 
+
     public void mostrarAtras() {
         if (isEmpty()) {
             throw new IllegalStateException("La lista esta vacia.");
         }
+
         Nodo nodo = cola;
         while (nodo != null) {
             System.out.println(nodo.getDato());
@@ -120,9 +179,11 @@ public class ListaDoblementeEnlazada {
         }
     }
 
+
     public boolean isEmpty() {
-        return (cabeza == null);
+        return cabeza == null;
     }
+
 
     public int size() {
         return tamaño;

@@ -44,7 +44,7 @@ public class Pila {
     }
 
     public boolean isEmpty() {
-        if (tope==null) {
+        if (tamaño == 0) {
             return true;
         }
         return false;
@@ -55,6 +55,7 @@ public class Pila {
             throw new IllegalStateException("La pila ya esta vacia.");
         }
         tope = null;
+        tamaño = 0;
     }
 
     public void ver() {
