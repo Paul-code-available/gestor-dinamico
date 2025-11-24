@@ -1,6 +1,6 @@
 package logica;
 
-import java.util.EmptyStackException;
+import java.util.NoSuchElementException;
 
 public class Pila {
 
@@ -27,7 +27,7 @@ public class Pila {
 
     public int pop() {
         if (isEmpty()) {
-            throw new EmptyStackException();
+            throw new IllegalStateException("No hay elementos para eliminar.");
         }
 
         int temporal = tope.getDato();
@@ -38,19 +38,38 @@ public class Pila {
 
     public int peek() {
         if (isEmpty()) {
-            throw new EmptyStackException();
+            throw new NoSuchElementException("No hay elementos para ver.");
         }
         return tope.getDato();
     }
 
     public boolean isEmpty() {
-        if (tope==null) {
+        if (tamaño == 0) {
             return true;
         }
         return false;
     }
 
-    public int getTamaño() {
+    public void vaciar() {
+        if (isEmpty()) {
+            throw new IllegalStateException("La pila ya esta vacia.");
+        }
+        tope = null;
+        tamaño = 0;
+    }
+
+    public void ver() {
+        if (isEmpty()) {
+            throw new IllegalStateException("La pila esta vacia.");
+        }
+        Nodo nodo = tope;
+        while (nodo != null) {
+            System.out.print(nodo.getDato() + " ");
+            nodo = nodo.getSiguiente();
+        }
+    }
+
+    public int size() {
         return tamaño;
     }
 }
