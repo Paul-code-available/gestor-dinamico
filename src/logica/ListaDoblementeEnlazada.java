@@ -48,11 +48,11 @@ public class ListaDoblementeEnlazada {
 
         // insertar en medio
         Nodo nodo = cabeza;
-        int index = 0;
+        int i = 0;
 
-        while (index < posicion) {
+        while (i < posicion) {
             nodo = nodo.getSiguiente();
-            index++;
+            i++;
         }
 
         // nodo es el nodo en la posición actual, insertamos antes de él
@@ -90,7 +90,7 @@ public class ListaDoblementeEnlazada {
             return valor;
         }
 
-        // Caso 2: eliminar cola
+        // eliminar cola
         if (cola.getDato() == dato) {
             int valor = cola.getDato();
 
@@ -154,11 +154,14 @@ public class ListaDoblementeEnlazada {
     public void vaciar() {
         cabeza = null;
         cola = null;
-        tamaño = 0;   // ← antes no lo ponías
+        tamaño = 0;
     }
 
 
     public void mostrarAdelante() {
+        if (isEmpty()) {
+            throw new IllegalStateException("La lista esta vacia.");
+        }
         Nodo nodo = cabeza;
         while (nodo != null) {
             System.out.println(nodo.getDato());
@@ -181,7 +184,7 @@ public class ListaDoblementeEnlazada {
 
 
     public boolean isEmpty() {
-        return cabeza == null;
+        return tamaño == 0;
     }
 
 
