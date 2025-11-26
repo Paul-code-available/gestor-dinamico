@@ -30,7 +30,7 @@ public class Cola {
     }
 
     public int desencolar() {
-        if (isEmpty()) {
+        if (isEmpty() ) {
             throw new IllegalStateException("No hay elementos para desencolar.");
         }
 
@@ -79,7 +79,7 @@ public class Cola {
 
         Nodo nodo = frente;
         while (nodo != null) {
-            System.out.print(nodo.getDato() + " ");
+            System.out.print(nodo.getDato() + ", ");
             nodo = nodo.getSiguiente();
         }
     }
